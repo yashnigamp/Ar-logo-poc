@@ -1,52 +1,37 @@
-import React, { useEffect, useRef } from 'react';
-import * as THREE from 'three';
-import { ARButton } from 'three/examples/jsm/webxr/ARButton.js';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useEffect } from "react";
+import Script from "next/script";
 
-const WebXRARComponent = () => {
-  const containerRef = useRef(null);
-
+const ARSurfaceComponent = () => {
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 20);
-      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(window.devicePixelRatio);
-      renderer.xr.enabled = true;
-
-      containerRef.current.appendChild(renderer.domElement);
-      document.body.appendChild(ARButton.createButton(renderer));
-
-      const geometry = new THREE.BoxGeometry(0.1, 0.1, 0.1);
-      const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-      const cube = new THREE.Mesh(geometry, material);
-      cube.position.set(0, 0, -0.3);
-      scene.add(cube);
-
-      const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
-      scene.add(light);
-
-      renderer.setAnimationLoop(() => {
-        renderer.render(scene, camera);
+    if (typeof window !== "undefined") {
+      window.addEventListener("camera-init", (data) => {
+        console.log("AR.js initialized");
       });
-
-      function onWindowResize() {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-      }
-
-      window.addEventListener('resize', onWindowResize, false);
-
-      return () => {
-        window.removeEventListener('resize', onWindowResize);
-        containerRef.current?.removeChild(renderer.domElement);
-      };
     }
   }, []);
 
-  return <div ref={containerRef} />;
+  return (
+    <>
+      <Script
+        src="https://aframe.io/releases/1.2.0/aframe.min.js"
+        strategy="beforeInteractive"
+      />
+      <Script
+        src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"
+        strategy="beforeInteractive"
+      />
+
+      <a-scene
+        vr-mode-ui="enabled: false"
+        embedded
+        arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
+      >
+        <a-box color="red" scale="0.1 0.1 0.1" position="0 0 -1"></a-box>
+        <a-camera gps-camera rotation-reader></a-camera>
+      </a-scene>
+    </>
+  );
 };
 
-export default WebXRARComponent;
+export default ARSurfaceComponent;
