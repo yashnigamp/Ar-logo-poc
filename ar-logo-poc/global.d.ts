@@ -40,6 +40,14 @@ declare namespace JSX {
     "a-plane": JSX;
     "a-sky": JSX;
     "a-marker-camera": JSX;
+
+    "a-scene": JSX;
+    "a-assets": JSX;
+    "a-asset-item": JSX;
+    "a-camera": JSX;
+    "a-entity": JSX;
+    "a-gltf-model": JSX;
+
     // Add :other A-Frame elements as needed
   }
 }
