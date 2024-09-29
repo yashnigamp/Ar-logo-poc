@@ -31,7 +31,7 @@ export default function Home() {
     try {
       console.log("Setting up Quick Look for iOS");
       document.body.innerHTML = `
-        <a href="/path/to/model.usdz" rel="ar" class="quick-look-button">
+        <a href="logo.usdz" rel="ar" class="quick-look-button">
           <img src="logo.png" alt="View in AR" style="width: 200px; height: auto; margin: 0 auto; display: block;" />
         </a>
       `;
